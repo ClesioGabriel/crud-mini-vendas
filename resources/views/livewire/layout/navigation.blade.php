@@ -1,3 +1,4 @@
+
 <?php
 
 use App\Livewire\Actions\Logout;
@@ -39,6 +40,9 @@ new class extends Component
                     <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')" wire:navigate>
                         {{ __('Produtos') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('sales.index')" :active="request()->routeIs('sales.*')" wire:navigate>
+                        {{ __('Vendas') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -58,7 +62,7 @@ new class extends Component
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile')" wire:navigate>
+                        <x-dropdown-link :href="route('profile.edit')" wire:navigate>
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
@@ -100,7 +104,7 @@ new class extends Component
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile')" wire:navigate>
+                <x-responsive-nav-link :href="route('profile.edit')" wire:navigate>
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 

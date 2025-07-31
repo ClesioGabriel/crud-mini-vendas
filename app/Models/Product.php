@@ -9,16 +9,20 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'price', 'description'];
+    protected $fillable = [
+        'name',
+        'price',
+        'description'
+    ];
 
 
     public function getPriceAttribute($value)
     {
-        return (float) $value; // Garante que o valor retornado seja sempre um float
+        return (float) $value;
     }
 
     public function setPriceAttribute($value)
     {
-        $this->attributes['price'] = (float) $value; // Garante que o valor salvo seja um float
+        $this->attributes['price'] = (float) $value; 
     }
 }
