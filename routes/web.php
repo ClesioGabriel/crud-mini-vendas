@@ -20,7 +20,7 @@ Route::get('/sales', SalesIndex::class)->name('sales.index');
 
 Route::view('/', 'welcome');
 
-Route::view('dashboard', 'dashboard')
+Route::get('/dashboard', DashboardIndex::class)
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
