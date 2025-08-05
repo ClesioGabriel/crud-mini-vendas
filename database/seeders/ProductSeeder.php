@@ -24,7 +24,7 @@ class ProductSeeder extends Seeder
         Product::create([
             'name' => 'Teclado Mecânico',
             'price' => 299.00,
-            'description' => 'Teclado mecânico com switches azuis.'
+            'description' => 'Teclado mecânico branco.'
         ]);
 
         Product::create([
