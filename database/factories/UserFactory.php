@@ -41,4 +41,17 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    /**
+     * Estado customizado para criar o usuário Clésio Gabriel
+     */
+    public function clesio(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'name' => 'Clésio Gabriel',
+            'email' => 'clesiogabriel10@gmail.com',
+            'password' => Hash::make('12345678'),
+            'email_verified_at' => now(),
+        ]);
+    }
 }

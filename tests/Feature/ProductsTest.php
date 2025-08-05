@@ -1,7 +1,7 @@
 <?php
 use App\Models\Product;
-use App\Http\Livewire\Products\Index;
-use App\Http\Livewire\Products\Form;
+use App\Livewire\Products\Index;
+use App\Livewire\Products\Form;
 use Livewire\Livewire;
 use Illuminate\Support\Facades\Config;
 
@@ -20,7 +20,7 @@ it('creates product', function () {
         ->set('price', 100)
         ->set('description', 'Descrição')
         ->call('save')
-        ->assertEmitted('product-saved');
+        ->assertDispatched('product-saved');
     $this->assertDatabaseHas('products', ['name' => 'Produto Teste']);
 });
 

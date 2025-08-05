@@ -1,8 +1,9 @@
 <?php
-use App\Http\Livewire\Dashboard;
+use App\Livewire\Dashboard\Index;
 use Livewire\Livewire;
 use Illuminate\Support\Facades\Config;
 
 it('renders dashboard', function () {
-    Livewire::test(Dashboard::class)->assertStatus(200);
+    Livewire::test(Index::class)
+    ->assertSee('Clientes');
 });

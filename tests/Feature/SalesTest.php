@@ -2,8 +2,8 @@
 use App\Models\Sale;
 use App\Models\Customer;
 use App\Models\Product;
-use App\Http\Livewire\Sales\Index;
-use App\Http\Livewire\Sales\Form;
+use App\Livewire\Sales\Index;
+use App\Livewire\Sales\Form;
 use Livewire\Livewire;
 use Illuminate\Support\Facades\Config;
 
@@ -34,14 +34,14 @@ it('creates sale with items', function () {
             'subtotal' => 100,
         ]])
         ->call('save')
-        ->assertEmitted('sale-saved');
+        ->assertDispatched('sale-saved');
     $this->assertDatabaseHas('sales', ['customer_id' => $customer->id]);
 });
 
 it('validates customer and items', function () {
     Livewire::test(Form::class)
-        ->set('customer_id', null)
-        ->set('items', [])
-        ->call('save')
-        ->assertHasErrors(['customer_id', 'items.*.product_id']);
+    ->set('customer_id', '')
+    ->set('items', [['product_id' => '']])
+    ->call('save')
+    ->assertHasErrors(['customer_id', 'items.*.product_id']);
 });

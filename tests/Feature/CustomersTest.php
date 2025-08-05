@@ -1,14 +1,16 @@
 <?php
-use App\Models\Customer;
-use App\Http\Livewire\Customers\Index;
-use App\Http\Livewire\Customers\Form;
-use Livewire\Livewire;
-use Illuminate\Support\Facades\Config;
 
-beforeEach(fn () => Customer::truncate());
+use App\Models\Customer;
+use App\Livewire\Customers\Index;
+use App\Livewire\Customers\Form;
+use Livewire\Livewire;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+uses(RefreshDatabase::class);
 
 it('lists customers', function () {
     Customer::factory()->count(3)->create();
+
     Livewire::test(Index::class)
         ->assertSee('Clientes')
         ->assertSee(Customer::first()->name);
@@ -20,8 +22,13 @@ it('creates customer', function () {
         ->set('email', 'teste@example.com')
         ->set('phone', '123456789')
         ->call('save')
-        ->assertEmitted('customer-saved');
-    $this->assertDatabaseHas('customers', ['email' => 'teste@example.com']);
+        ->assertDispatched('customer-saved');
+
+    $this->assertDatabaseHas('customers', [
+        'email' => 'teste@example.com',
+        'name' => 'Nome Teste',
+        'phone' => '123456789',
+    ]);
 });
 
 it('validates required fields', function () {

@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\SaleItem;
 
 class Sale extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'customer_id',
         'date',
