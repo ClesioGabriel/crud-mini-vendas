@@ -66,7 +66,7 @@ class Index extends Component
         $this->dispatch('notify', 'Produto excluído com sucesso!');
     }
 
-    private function resetFormFields()
+    public function resetFormFields()
     {
         $this->name = '';
         $this->price = '';

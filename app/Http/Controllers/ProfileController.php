@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -16,7 +17,7 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
+        return view('profile', [
             'user' => $request->user(),
         ]);
     }
@@ -34,7 +35,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile')->with('status', 'profile-updated');
     }
 
     /**
@@ -43,10 +44,19 @@ class ProfileController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
+            'password' => ['required'],
         ]);
 
         $user = $request->user();
+
+        // Verifica se a senha está correta
+        if (!Hash::check($request->password, $user->password)) {
+            return redirect()->back()
+                ->withErrors([
+                    'password' => __('A senha informada está incorreta.'),
+                ], 'userDeletion')
+                ->withInput(); // <- necessário para manter sessão ativa
+        }
 
         Auth::logout();
 
@@ -57,4 +67,6 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+
 }

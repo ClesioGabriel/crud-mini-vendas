@@ -9,6 +9,7 @@ use App\Models\Product;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class Form extends Component
 {
@@ -111,6 +112,21 @@ class Form extends Component
         });
 
         $this->dispatch('sale-saved');
+    }
+
+    public function setSale(Sale $sale): void
+    {
+        $this->sale = $sale;
+        $this->customer_id = $sale->customer_id;
+        $this->date = \Carbon\Carbon::parse($sale->date)->format('Y-m-d');
+        $this->items = $sale->items->map(function ($item) {
+            return [
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+                'unit_price' => $item->unit_price,
+                'subtotal' => $item->subtotal,
+            ];
+        })->toArray();
     }
 
     public function render()

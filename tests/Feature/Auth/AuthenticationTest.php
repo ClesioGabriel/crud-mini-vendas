@@ -70,3 +70,39 @@ test('users can logout', function () {
 
     $this->assertGuest();
 });
+
+test('users are rate limited after too many failed login attempts', function () {
+    $user = User::factory()->create();
+    $throttleKey = strtolower($user->email).'|127.0.0.1';
+
+    RateLimiter::clear($throttleKey);
+
+    for ($i = 0; $i < 5; $i++) {
+        $component = Volt::test('pages.auth.login')
+            ->set('form.email', $user->email)
+            ->set('form.password', 'wrong-password');
+
+        $component->call('login');
+
+        $component
+            ->assertHasErrors()
+            ->assertNoRedirect();
+
+        $this->assertGuest();
+    }
+
+    $component = Volt::test('pages.auth.login')
+        ->set('form.email', $user->email)
+        ->set('form.password', 'wrong-password');
+
+    $component->call('login');
+
+    $component
+        ->assertHasErrors(['form.email'])
+        ->assertSee('Too many login attempts') 
+        ->assertNoRedirect();
+
+    $this->assertGuest();
+
+    expect(RateLimiter::tooManyAttempts($throttleKey, 5))->toBeTrue();
+});
